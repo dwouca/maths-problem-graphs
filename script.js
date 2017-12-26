@@ -10,9 +10,7 @@ function getGradient(p1, p2){
 }
 
 function setup(){
-	createCanvas(300,300);
-	background(0);
-	stroke(255);
+	createCanvas(600, 600);
 	strokeWeight(5);
 	for(let i=0; i<pairNum; i++) {
 		let pointset = [];
@@ -25,36 +23,42 @@ function setup(){
 		pointset.gradient = getGradient(pointset[0], pointset[1]);
 		points.push(pointset);
 	}
-	console.log(points[0]);
-	points.forEach((pair) => {
-		point(pair[0].x, pair[0].y);
-	})
-	stroke(0, 200, 0);
-	points.forEach((pair) => {
-		point(pair[1].x, pair[1].y);
-	})
-	strokeWeight(1);
-	for(let i=0;i<points.length; i++){
-		line(points[i][0].x, points[i][0].y, points[i][1].x, points[i][1].y);
-	}
+
 	currentPos = [];
 	points.forEach((pair) => {
-
-		console.log({x: pair[0].x, y: pair[0].y});
 		currentPos.push({x: pair[0].x,
 										 y: pair[0].y});
 	});
 	console.log(currentPos);
-	stroke(200, 0, 0);
 }
 
 function draw(){
+	background(0);
+	strokeWeight(5);
+	stroke(255);
+	points.forEach((pair) => {
+		point(pair[0].x, pair[0].y);
+	})
+	stroke(70);
+	points.forEach((pair) => {
+		point(pair[1].x, pair[1].y);
+	})
+	stroke(0, 200, 0);
+	strokeWeight(1);
+	for(let i=0;i<points.length; i++){
+		line(points[i][0].x, points[i][0].y, points[i][1].x, points[i][1].y);
+	}
+	stroke(200, 0, 0);
+
+	strokeWeight(5);
 	for(let i=0; i<currentPos.length; i++){
-		if(points[i].gradient == false){
-			currentPos[i].y+=1;
-		} else {
-			currentPos[i].x+=1;
-			currentPos[i].y+=points[i].gradient;
+		if(true){ /* change to not reached end of line*/
+			if(points[i].gradient == false){
+				currentPos[i].x+=1;
+			} else {
+				currentPos[i].y+=1;
+				currentPos[i].x+=points[i].gradient;
+			}
 		}
 		point(currentPos[i].x, currentPos[i].y);
 	}
