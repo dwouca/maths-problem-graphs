@@ -1,44 +1,61 @@
 let pairNum = 5;
 let points = [];
 
+function getGradient(p1, p2){
+	if(p1.y == p2.y){
+		return false;
+	}
+	gradient = (p2.x-p1.x)/(p2.y-p1.y);
+	return(gradient);
+}
+
 function setup(){
 	createCanvas(300,300);
 	background(0);
 	stroke(255);
 	strokeWeight(5);
-	for(let i=0; i<2; i++) {
+	for(let i=0; i<pairNum; i++) {
 		let pointset = [];
-		for(let j=0; j<pairNum; j++) {
-			pointset.push([(Math.floor(Math.random()*(width-40))+20), (Math.floor(Math.random()*(height-40))+20)]);
+		for(let j=0; j<2; j++) {
+			pointset.push({
+				x: (Math.floor(Math.random()*(width-40))+20),
+				y: (Math.floor(Math.random()*(height-40))+20),
+			});
 		}
+		pointset.gradient = getGradient(pointset[0], pointset[1]);
 		points.push(pointset);
 	}
 	console.log(points[0]);
-	for(let i=0;i<points[0].length; i++){
-		point(points[0][i][0], points[0][i][1]);
-	}
+	points.forEach((pair) => {
+		point(pair[0].x, pair[0].y);
+	})
 	stroke(0, 200, 0);
-	for(let i=0;i<points[1].length; i++){
-		point(points[1][i][0], points[1][i][1]);
-	}
+	points.forEach((pair) => {
+		point(pair[1].x, pair[1].y);
+	})
 	strokeWeight(1);
-	for(let i=0;i<points[1].length; i++){
-		line(points[0][i][0], points[0][i][1], points[1][i][0], points[1][i][1]);
+	for(let i=0;i<points.length; i++){
+		line(points[i][0].x, points[i][0].y, points[i][1].x, points[i][1].y);
 	}
-	currentPos = points[0];
-	console.log(currentPos[0])
+	currentPos = [];
+	points.forEach((pair) => {
+
+		console.log({x: pair[0].x, y: pair[0].y});
+		currentPos.push({x: pair[0].x,
+										 y: pair[0].y});
+	});
+	console.log(currentPos);
 	stroke(200, 0, 0);
 }
 
 function draw(){
 	for(let i=0; i<currentPos.length; i++){
-		currentPos[i][0]+=1;
-		currentPos[i][1]+=calculateYStep(currentPos[i],points[1][i]);
-		/*point(currentPos[i][0], currentPos[i][1]);*/
+		if(points[i].gradient == false){
+			currentPos[i].y+=1;
+		} else {
+			currentPos[i].x+=1;
+			currentPos[i].y+=points[i].gradient;
+		}
+		point(currentPos[i].x, currentPos[i].y);
 	}
-}
-
-function calculateYStep(p1, p2){
-	gradient = (p2[0]-p1[0])/(p2[1]-p1[1]);
-	return(gradient);
 }
