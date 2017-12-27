@@ -1,5 +1,6 @@
 let pairNum = 5;
 let points = [];
+let cnv;
 
 function getGradient(p1, p2){
 	if(p1.y == p2.y){
@@ -9,8 +10,15 @@ function getGradient(p1, p2){
 	return(gradient);
 }
 
+function centerCanvas(){
+	var x = (windowWidth - width) / 2;
+  var y = (windowHeight - height) / 2;
+  cnv.position(x, y);
+}
+
 function setup(){
-	createCanvas(600, 600);
+	cnv = createCanvas(Math.min(windowHeight, windowWidth), Math.min(windowHeight, windowWidth));
+	centerCanvas();
 	strokeWeight(5);
 	for(let i=0; i<pairNum; i++) {
 		let pointset = [];
@@ -30,6 +38,10 @@ function setup(){
 										 y: pair[0].y});
 	});
 	console.log(currentPos);
+}
+
+function windowResized(){
+	centerCanvas();
 }
 
 function draw(){
