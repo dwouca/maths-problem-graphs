@@ -1,6 +1,7 @@
 let pairNum = 5;
 let points = [];
 let cnv;
+let currentPos = [];
 
 function getGradient(p1, p2){
 	if(p1.y == p2.y){
@@ -32,7 +33,6 @@ function setup(){
 		points.push(pointset);
 	}
 
-	currentPos = [];
 	points.forEach((pair) => {
 		currentPos.push({x: pair[0].x,
 										 y: pair[0].y});
@@ -64,7 +64,21 @@ function draw(){
 
 	strokeWeight(5);
 	for(let i=0; i<currentPos.length; i++){
-		if(true){ /* change to not reached end of line*/
+		let atEndOfLine;
+
+
+		if(points[i].gradient == false){ /* vertical line */
+			atEndOfLine = (points[i][1].y)>=(points[i][0].y);
+		} else if((points[i][1].y>=points[i][0].y) && (points[i][1].x>=points[i][0].x)) {
+			atEndOfLine = (currentPos[i].y>=points[i][1].y) && (currentPos[i].x>=points[i][1].x);
+		} else if((points[i][1].y<=points[i][0].y) && (points[i][1].x<=points[i][0].x)) {
+			atEndOfLine = (currentPos[i].y<=points[i][1].y) && (currentPos[i].x<=points[i][1].x);
+		} else if((points[i][1].y>=points[i][0].y) && (points[i][1].x<=points[i][0].x)) {
+			atEndOfLine = (currentPos[i].y>=points[i][1].y) && (currentPos[i].x<=points[i][1].x);
+		} else if((points[i][1].y<=points[i][0].y) && (points[i][1].x>=points[i][0].x)) {
+			atEndOfLine = (currentPos[i].y<=points[i][1].y) && (currentPos[i].x>=points[i][1].x);
+		};
+		if(!atEndOfLine){ /* if not reached end of line */
 			if(points[i].gradient == false){
 				currentPos[i].x+=1;
 			} else {
