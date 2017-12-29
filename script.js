@@ -1,4 +1,4 @@
-let pairNum = 5;
+let pairNum = 3;
 let points = [];
 let cnv;
 let currentPos = [];
@@ -66,7 +66,6 @@ function draw(){
 	for(let i=0; i<currentPos.length; i++){
 		let atEndOfLine;
 
-
 		if(points[i].gradient == false){ /* vertical line */
 			atEndOfLine = (points[i][1].y)>=(points[i][0].y);
 		} else if((points[i][1].y>=points[i][0].y) && (points[i][1].x>=points[i][0].x)) {
@@ -80,10 +79,23 @@ function draw(){
 		};
 		if(!atEndOfLine){ /* if not reached end of line */
 			if(points[i].gradient == false){
-				currentPos[i].x+=1;
+				currentPos[i].x+=1/1.5;
+			} else if (points[i].gradient>=0) {
+				if (points[i][1].x>=points[i][0].x) {/* point going towards is higher than current point */
+					currentPos[i].y+=1/1.5;
+					currentPos[i].x+=points[i].gradient/1.5;
+				} else {
+					currentPos[i].y-=1/1.5;
+					currentPos[i].x-=points[i].gradient/1.5;
+				}
 			} else {
-				currentPos[i].y+=1;
-				currentPos[i].x+=points[i].gradient;
+				if (points[i][1].x>=points[i][0].x) {/* point going towards is higher than current point */
+					currentPos[i].y-=1/1.5;
+					currentPos[i].x-=points[i].gradient/1.5;
+				} else {
+					currentPos[i].y+=1/1.5;
+					currentPos[i].x+=points[i].gradient/1.5;
+				}
 			}
 		}
 		point(currentPos[i].x, currentPos[i].y);
