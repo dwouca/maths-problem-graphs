@@ -64,40 +64,43 @@ function draw(){
 
 	strokeWeight(5);
 	for(let i=0; i<currentPos.length; i++){
-		let atEndOfLine;
+		updatePosition(i);
+	}
+}
+function updatePosition(i) {
+	let atEndOfLine;
 
-		if(points[i].gradient == false){ /* vertical line */
-			atEndOfLine = (points[i][1].y)>=(points[i][0].y);
-		} else if((points[i][1].y>=points[i][0].y) && (points[i][1].x>=points[i][0].x)) {
-			atEndOfLine = (currentPos[i].y>=points[i][1].y) && (currentPos[i].x>=points[i][1].x);
-		} else if((points[i][1].y<=points[i][0].y) && (points[i][1].x<=points[i][0].x)) {
-			atEndOfLine = (currentPos[i].y<=points[i][1].y) && (currentPos[i].x<=points[i][1].x);
-		} else if((points[i][1].y>=points[i][0].y) && (points[i][1].x<=points[i][0].x)) {
-			atEndOfLine = (currentPos[i].y>=points[i][1].y) && (currentPos[i].x<=points[i][1].x);
-		} else if((points[i][1].y<=points[i][0].y) && (points[i][1].x>=points[i][0].x)) {
-			atEndOfLine = (currentPos[i].y<=points[i][1].y) && (currentPos[i].x>=points[i][1].x);
-		};
-		if(!atEndOfLine){ /* if not reached end of line */
-			if(points[i].gradient == false){
-				currentPos[i].x+=1/1.5;
-			} else if (points[i].gradient>=0) {
-				if (points[i][1].x>=points[i][0].x) {/* point going towards is higher than current point */
-					currentPos[i].y+=1/1.5;
-					currentPos[i].x+=points[i].gradient/1.5;
-				} else {
-					currentPos[i].y-=1/1.5;
-					currentPos[i].x-=points[i].gradient/1.5;
-				}
+	if(points[i].gradient == false){ /* vertical line */
+		atEndOfLine = (points[i][1].y)>=(points[i][0].y);
+	} else if((points[i][1].y>=points[i][0].y) && (points[i][1].x>=points[i][0].x)) {
+		atEndOfLine = (currentPos[i].y>=points[i][1].y) && (currentPos[i].x>=points[i][1].x);
+	} else if((points[i][1].y<=points[i][0].y) && (points[i][1].x<=points[i][0].x)) {
+		atEndOfLine = (currentPos[i].y<=points[i][1].y) && (currentPos[i].x<=points[i][1].x);
+	} else if((points[i][1].y>=points[i][0].y) && (points[i][1].x<=points[i][0].x)) {
+		atEndOfLine = (currentPos[i].y>=points[i][1].y) && (currentPos[i].x<=points[i][1].x);
+	} else if((points[i][1].y<=points[i][0].y) && (points[i][1].x>=points[i][0].x)) {
+		atEndOfLine = (currentPos[i].y<=points[i][1].y) && (currentPos[i].x>=points[i][1].x);
+	};
+	if(!atEndOfLine){ /* if not reached end of line */
+		if(points[i].gradient == false){
+			currentPos[i].x+=1/1.5;
+		} else if (points[i].gradient>=0) {
+			if (points[i][1].x>=points[i][0].x) {/* point going towards is higher than current point */
+				currentPos[i].y+=1/1.5;
+				currentPos[i].x+=points[i].gradient/1.5;
 			} else {
-				if (points[i][1].x>=points[i][0].x) {/* point going towards is higher than current point */
-					currentPos[i].y-=1/1.5;
-					currentPos[i].x-=points[i].gradient/1.5;
-				} else {
-					currentPos[i].y+=1/1.5;
-					currentPos[i].x+=points[i].gradient/1.5;
-				}
+				currentPos[i].y-=1/1.5;
+				currentPos[i].x-=points[i].gradient/1.5;
+			}
+		} else {
+			if (points[i][1].x>=points[i][0].x) {/* point going towards is higher than current point */
+				currentPos[i].y-=1/1.5;
+				currentPos[i].x-=points[i].gradient/1.5;
+			} else {
+				currentPos[i].y+=1/1.5;
+				currentPos[i].x+=points[i].gradient/1.5;
 			}
 		}
-		point(currentPos[i].x, currentPos[i].y);
 	}
+	point(currentPos[i].x, currentPos[i].y);
 }
